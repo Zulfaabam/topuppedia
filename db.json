@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@example.com",
+      "password": "password123",
+      "name": "Admin User",
+      "role": "admin",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+    },
+    {
+      "id": "2",
+      "username": "johndoe",
+      "email": "john@example.com",
+      "password": "password123",
+      "name": "John Doe",
+      "role": "user",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=John"
+    }
+  ],
+  "transactions": [],
+  "products": []
+}
