@@ -1,23 +1,15 @@
-import { Search, ShoppingCart, User, Bell, HelpCircle } from 'lucide-react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
+import { useState } from 'react'
 import LoginModal from './LoginModal'
+import { useUser } from '../contexts/UserContext'
 
 export default function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const location = useLocation()
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    }
-  }, [])
+  const { user, logout } = useUser()
 
   const handleLogout = () => {
-    localStorage.removeItem('user')
-    setUser(null)
+    logout()
   }
 
   return (
@@ -39,7 +31,7 @@ export default function Navbar() {
                   : 'hover:text-brand-primary transition-colors py-1 border-b-2 border-transparent'
               }
             >
-              Paket
+              Semua Paket
             </NavLink>
           </div>
         </div>
@@ -88,11 +80,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        onLoginSuccess={(userData) => setUser(userData)}
-      />
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </nav>
   )
 }

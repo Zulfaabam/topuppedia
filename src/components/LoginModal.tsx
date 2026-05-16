@@ -2,6 +2,7 @@ import { X, Eye, EyeOff } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
+import { useUser } from '../contexts/UserContext'
 
 interface LoginModalProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ export default function LoginModal({
   onClose,
   onLoginSuccess,
 }: LoginModalProps) {
+  const { login } = useUser()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -34,8 +36,8 @@ export default function LoginModal({
 
       if (users.length > 0) {
         const user = users[0]
-        // Store user in localStorage for persistence
-        localStorage.setItem('user', JSON.stringify(user))
+        // Use global login function
+        login(user)
 
         if (onLoginSuccess) {
           onLoginSuccess(user)
