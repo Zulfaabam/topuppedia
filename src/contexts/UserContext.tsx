@@ -14,6 +14,12 @@ interface UserContextType {
   login: (userData: User) => void
   logout: () => void
   isLoading: boolean
+  isLoginModalOpen: boolean
+  openLoginModal: () => void
+  closeLoginModal: () => void
+  isSignupModalOpen: boolean
+  openSignupModal: () => void
+  closeSignupModal: () => void
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -21,6 +27,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false)
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user')
@@ -38,6 +46,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const login = (userData: User) => {
     setUser(userData)
     localStorage.setItem('user', JSON.stringify(userData))
+    setIsLoginModalOpen(false)
+    setIsSignupModalOpen(false)
   }
 
   const logout = () => {
@@ -45,8 +55,33 @@ export function UserProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user')
   }
 
+  const openLoginModal = () => {
+    setIsSignupModalOpen(false)
+    setIsLoginModalOpen(true)
+  }
+  const closeLoginModal = () => setIsLoginModalOpen(false)
+
+  const openSignupModal = () => {
+    setIsLoginModalOpen(false)
+    setIsSignupModalOpen(true)
+  }
+  const closeSignupModal = () => setIsSignupModalOpen(false)
+
   return (
-    <UserContext.Provider value={{ user, login, logout, isLoading }}>
+    <UserContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        isLoading,
+        isLoginModalOpen,
+        openLoginModal,
+        closeLoginModal,
+        isSignupModalOpen,
+        openSignupModal,
+        closeSignupModal,
+      }}
+    >
       {children}
     </UserContext.Provider>
   )

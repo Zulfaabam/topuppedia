@@ -4,19 +4,16 @@ import { useState, useEffect, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { useUser } from '../contexts/UserContext'
 
-interface LoginModalProps {
+interface SignupModalProps {
   isOpen: boolean
   onClose: () => void
-  onLoginSuccess?: (user: any) => void
 }
 
-export default function LoginModal({
-  isOpen,
-  onClose,
-  onLoginSuccess,
-}: LoginModalProps) {
-  const { login, openSignupModal } = useUser()
+export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
+  const { login, openLoginModal } = useUser()
   const [showPassword, setShowPassword] = useState(false)
+  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -39,33 +36,50 @@ export default function LoginModal({
     setError('')
 
     try {
-      // json-server login mockup: filter by email and password
-      const response = await fetch(
-        `http://localhost:3001/users?email=${email}&password=${password}`,
-      )
-      const users = await response.json()
+      // Check if email already exists
+      const checkResponse = await fetch(`http://localhost:3001/users?email=${email}`)
+      const existingUsers = await checkResponse.json()
 
-      if (users.length > 0) {
-        const user = users[0]
-        // Use global login function
-        login(user)
+      if (existingUsers.length > 0) {
+        setError('Email sudah terdaftar')
+        setIsLoading(false)
+        return
+      }
 
-        if (onLoginSuccess) {
-          onLoginSuccess(user)
-        }
+      // Create new user
+      const newUser = {
+        id: Date.now().toString(),
+        name,
+        username,
+        email,
+        password,
+        role: 'user',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
+      }
 
-        // Reset form and close modal
+      const response = await fetch('http://localhost:3001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      })
+
+      if (response.ok) {
+        const savedUser = await response.json()
+        login(savedUser)
+        // Reset form
+        setName('')
+        setUsername('')
         setEmail('')
         setPassword('')
         onClose()
       } else {
-        setError('Email atau kata sandi salah')
+        setError('Gagal mendaftar. Silakan coba lagi.')
       }
     } catch (err) {
-      setError(
-        'Gagal terhubung ke server. Pastikan backend mockup sedang berjalan.',
-      )
-      console.error('Login error:', err)
+      setError('Gagal terhubung ke server. Pastikan backend mockup sedang berjalan.')
+      console.error('Signup error:', err)
     } finally {
       setIsLoading(false)
     }
@@ -77,7 +91,7 @@ export default function LoginModal({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          key='login-modal-overlay'
+          key='signup-modal-overlay'
           className='fixed inset-0 z-100'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -91,12 +105,12 @@ export default function LoginModal({
             initial={{ scale: 0.95, y: 20, x: '-50%' }}
             animate={{ scale: 1, y: '-50%', x: '-50%' }}
             exit={{ scale: 0.95, y: -20, x: '-50%' }}
-            className='fixed left-1/2 top-1/2 w-[90%] max-w-100 bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col origin-center z-101'
+            className='fixed left-1/2 top-1/2 w-[90%] max-w-112.5 bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col origin-center z-101'
           >
             <div className='p-6 md:p-8'>
-              <div className='flex items-center justify-between mb-8'>
+              <div className='flex items-center justify-between mb-6'>
                 <h2 className='text-[20px] font-bold text-gray-900 tracking-tight'>
-                  Masuk ke TopUpPedia
+                  Daftar Akun Baru
                 </h2>
                 <button
                   onClick={onClose}
@@ -106,12 +120,41 @@ export default function LoginModal({
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className='space-y-5'>
+              <form onSubmit={handleSubmit} className='space-y-4'>
                 {error && (
                   <div className='p-3 text-xs font-bold text-red-600 bg-red-50 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-1'>
                     {error}
                   </div>
                 )}
+
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div className='space-y-2'>
+                    <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
+                      Nama Lengkap
+                    </label>
+                    <input
+                      type='text'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder='John Doe'
+                      required
+                      className='w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors'
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
+                      Username
+                    </label>
+                    <input
+                      type='text'
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder='johndoe'
+                      required
+                      className='w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors'
+                    />
+                  </div>
+                </div>
 
                 <div className='space-y-2'>
                   <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
@@ -123,22 +166,14 @@ export default function LoginModal({
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder='name@example.com'
                     required
-                    className='w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors'
+                    className='w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors'
                   />
                 </div>
 
                 <div className='space-y-2'>
-                  <div className='flex items-center justify-between'>
-                    <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
-                      Kata Sandi
-                    </label>
-                    <a
-                      href='#'
-                      className='text-[10px] font-bold text-brand-primary hover:underline'
-                    >
-                      Lupa Kata Sandi?
-                    </a>
-                  </div>
+                  <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
+                    Kata Sandi
+                  </label>
                   <div className='relative'>
                     <input
                       type={showPassword ? 'text' : 'password'}
@@ -146,7 +181,7 @@ export default function LoginModal({
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder='••••••••'
                       required
-                      className='w-full pl-4 pr-10 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors tracking-widest placeholder:tracking-widest'
+                      className='w-full pl-4 pr-10 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 text-sm transition-colors tracking-widest placeholder:tracking-widest'
                     />
                     <button
                       type='button'
@@ -170,10 +205,10 @@ export default function LoginModal({
                   {isLoading ? (
                     <>
                       <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin' />
-                      Sedang Masuk...
+                      Sedang Mendaftar...
                     </>
                   ) : (
-                    'Masuk'
+                    'Daftar Sekarang'
                   )}
                 </button>
               </form>
@@ -181,12 +216,12 @@ export default function LoginModal({
               <div className='h-px bg-gray-100 my-6'></div>
 
               <p className='text-xs text-center text-gray-500 font-medium'>
-                Belum punya akun?{' '}
+                Sudah punya akun?{' '}
                 <button
-                  onClick={openSignupModal}
+                  onClick={openLoginModal}
                   className='font-bold text-brand-primary hover:underline'
                 >
-                  Daftar
+                  Masuk
                 </button>
               </p>
             </div>

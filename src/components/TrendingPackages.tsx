@@ -5,7 +5,10 @@ import PaymentModal, { PackageData } from './PaymentModal'
 import { useQuery } from '@tanstack/react-query'
 import { NavLink } from 'react-router-dom'
 
+import { useUser } from '../contexts/UserContext'
+
 export default function TrendingPackages() {
+  const { user, openLoginModal } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(
     null,
@@ -27,6 +30,11 @@ export default function TrendingPackages() {
   })
 
   const handleBuy = (pkg: any) => {
+    if (!user) {
+      openLoginModal()
+      return
+    }
+
     setSelectedPackage({
       data: pkg.data,
       validity: pkg.validity,

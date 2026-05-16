@@ -4,8 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import PaymentModal, { PackageData } from './PaymentModal'
 import { OPERATOR_PREFIXES } from '../data/operatorPrefixes'
 import { OPERATOR_COLORS, DEFAULT_OPERATOR_COLOR } from '../data/operatorColors'
+import { useUser } from '../contexts/UserContext'
 
 export default function Hero() {
+  const { user, openLoginModal } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [operator, setOperator] = useState('')
@@ -50,6 +52,11 @@ export default function Hero() {
   }
 
   const handleBuy = (pkg: any) => {
+    if (!user) {
+      openLoginModal()
+      return
+    }
+
     setSelectedPackage({
       data: pkg.data,
       validity: pkg.validity,
@@ -73,7 +80,7 @@ export default function Hero() {
 
       <div className='text-center mb-12 max-w-2xl px-4'>
         <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-brand-primary mb-6 tracking-tight drop-shadow-sm'>
-          Mau Top Up Apa?
+          Mau Top Up Berapa?
         </h1>
         <p className='text-gray-600 font-medium'>
           Masukkan nomor teleponmu untuk melihat paket terbaik yang tersedia.

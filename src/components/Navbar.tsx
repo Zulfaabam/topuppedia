@@ -1,12 +1,18 @@
-import { Search } from 'lucide-react'
-import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import LoginModal from './LoginModal'
+import SignupModal from './SignupModal'
 import { useUser } from '../contexts/UserContext'
 
 export default function Navbar() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const { user, logout } = useUser()
+  const {
+    user,
+    logout,
+    isLoginModalOpen,
+    openLoginModal,
+    closeLoginModal,
+    isSignupModalOpen,
+    closeSignupModal,
+  } = useUser()
 
   const handleLogout = () => {
     logout()
@@ -22,29 +28,9 @@ export default function Navbar() {
           >
             TopUpPedia
           </Link>
-          {/* <div className='hidden lg:flex items-center gap-8 text-sm font-medium text-gray-600'>
-            <NavLink
-              to='/packages'
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-brand-primary border-b-2 border-brand-primary py-1'
-                  : 'hover:text-brand-primary transition-colors py-1 border-b-2 border-transparent'
-              }
-            >
-              Semua Paket
-            </NavLink>
-          </div> */}
         </div>
 
         <div className='flex items-center gap-4 sm:gap-6'>
-          {/* <div className='relative hidden md:block'>
-            <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400' />
-            <input
-              type='text'
-              placeholder='Cari paket...'
-              className='pl-10 pr-4 py-2 w-64 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/20 transition-shadow'
-            />
-          </div> */}
           {user ? (
             <>
               <button
@@ -55,7 +41,7 @@ export default function Navbar() {
               </button>
               <Link
                 to='/account'
-                className='w-10 h-10 rounded-full overflow-hidden border-2 border-[#00aed6] p-0.5 bg-white flex-shrink-0 cursor-pointer ml-2 relative group'
+                className='w-10 h-10 rounded-full overflow-hidden border-2 border-[#00aed6] p-0.5 bg-white shrink-0 cursor-pointer ml-2 relative group'
               >
                 <img
                   src={
@@ -71,7 +57,7 @@ export default function Navbar() {
           ) : (
             <>
               <button
-                onClick={() => setIsLoginOpen(true)}
+                onClick={openLoginModal}
                 className='bg-brand-primary text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-[#00556b] transition-colors shadow-sm whitespace-nowrap'
               >
                 Masuk
@@ -80,7 +66,8 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+      <SignupModal isOpen={isSignupModalOpen} onClose={closeSignupModal} />
     </nav>
   )
 }

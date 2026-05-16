@@ -17,6 +17,15 @@
       "name": "John Doe",
       "role": "user",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=John"
+    },
+    {
+      "id": "L24c2GWKOfw",
+      "name": "abam maba",
+      "username": "abam",
+      "email": "abam@mail.com",
+      "password": "test123",
+      "role": "user",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=abam"
     }
   ],
   "transactions": [
@@ -63,6 +72,42 @@
       "title": "100GB 30 Hari",
       "desc": "Paket Flash Speed",
       "amount": "Rp 129.000",
+      "status": "Success"
+    },
+    {
+      "id": "mSSFiaYLnSw",
+      "userId": "L24c2GWKOfw",
+      "date": "16 Mei 2026",
+      "title": "75GB",
+      "desc": "Masa Aktif 30 Hari - 081542426045",
+      "amount": "Rp 116.000",
+      "status": "Success"
+    },
+    {
+      "id": "TazXgg4Flv8",
+      "userId": "L24c2GWKOfw",
+      "date": "16 Mei 2026",
+      "title": "1GB",
+      "desc": "1 Hari - 081542426045",
+      "amount": "Rp 3.500",
+      "status": "Success"
+    },
+    {
+      "id": "AcxrhwCOdQ8",
+      "userId": "L24c2GWKOfw",
+      "date": "16 Mei 2026",
+      "title": "1GB",
+      "desc": "1 Hari - 08152424242",
+      "amount": "Rp 3.500",
+      "status": "Success"
+    },
+    {
+      "id": "dvfnIPTBcmw",
+      "userId": "L24c2GWKOfw",
+      "date": "16 Mei 2026",
+      "title": "1GB",
+      "desc": "1 Hari - 0816262622",
+      "amount": "Rp 3.500",
       "status": "Success"
     }
   ],
@@ -211,5 +256,6 @@
       "category": "budget",
       "recommended": false
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -16,7 +16,10 @@ import {
 
 import { useQuery } from '@tanstack/react-query'
 
+import { useUser } from '../contexts/UserContext'
+
 export default function AllPackages() {
+  const { user, openLoginModal } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(
     null,
@@ -47,6 +50,11 @@ export default function AllPackages() {
     allPackages?.filter((p: any) => p.category === 'budget') || []
 
   const handleBuy = (pkg: any) => {
+    if (!user) {
+      openLoginModal()
+      return
+    }
+
     setSelectedPackage({
       data: pkg.data,
       validity: pkg.validity,
