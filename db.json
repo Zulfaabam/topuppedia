@@ -70,7 +70,7 @@
     {
       "id": "1",
       "provider": "Telkomsel",
-      "providerColor": "text-green-600",
+      "providerColor": "text-red-600",
       "data": "100GB",
       "validity": "Masa Aktif 30 Hari",
       "features": [
@@ -87,7 +87,7 @@
     },
     {
       "id": "2",
-      "provider": "XL Axiata",
+      "provider": "XL",
       "providerColor": "text-blue-600",
       "data": "50GB",
       "validity": "Masa Aktif 30 Hari",
@@ -104,8 +104,8 @@
     },
     {
       "id": "3",
-      "provider": "IM3",
-      "providerColor": "text-orange-500",
+      "provider": "Indosat",
+      "providerColor": "text-yellow-500",
       "data": "75GB",
       "validity": "Masa Aktif 30 Hari",
       "features": [
@@ -119,7 +119,7 @@
     },
     {
       "id": "4",
-      "provider": "Booster",
+      "provider": "Axis",
       "data": "15GB",
       "validity": "Masa Aktif 7 Hari",
       "bonusLabel": "Bonus Aplikasi",
@@ -128,7 +128,7 @@
       "price": "Rp 22.500",
       "badge": "Promo Baru",
       "badgeColor": "bg-[#88fc85] text-green-900",
-      "providerColor": "text-blue-500",
+      "providerColor": "text-purple-500",
       "category": "promo",
       "recommended": false
     },
@@ -141,7 +141,7 @@
       "bonusValue": "5GB Malam",
       "oldPrice": "Rp 65.000",
       "price": "Rp 48.000",
-      "providerColor": "text-green-600",
+      "providerColor": "text-red-600",
       "category": "promo",
       "recommended": false
     },
@@ -167,43 +167,47 @@
       "bonusValue": "1.5GB/Hari",
       "oldPrice": "Rp 90.000",
       "price": "Rp 72.000",
-      "providerColor": "text-orange-600",
+      "providerColor": "text-pink-600",
       "category": "promo",
       "recommended": false
     },
     {
       "id": "8",
-      "provider": "Generic",
+      "provider": "Tri",
       "data": "2GB",
       "price": "Rp 5.000",
       "validity": "1 Hari",
+      "providerColor": "text-purple-600",
       "category": "budget",
       "recommended": false
     },
     {
       "id": "9",
-      "provider": "Generic",
+      "provider": "Axis",
       "data": "5GB",
       "price": "Rp 12.000",
       "validity": "3 Hari",
+      "providerColor": "text-purple-500",
       "category": "budget",
       "recommended": false
     },
     {
       "id": "10",
-      "provider": "Generic",
+      "provider": "Indosat",
       "data": "1GB",
       "price": "Rp 2.500",
       "validity": "1 Hari",
+      "providerColor": "text-yellow-500",
       "category": "budget",
       "recommended": false
     },
     {
       "id": "11",
-      "provider": "Generic",
+      "provider": "Telkomsel",
       "data": "8GB",
       "price": "Rp 20.000",
       "validity": "7 Hari",
+      "providerColor": "text-red-600",
       "category": "budget",
       "recommended": false
     }

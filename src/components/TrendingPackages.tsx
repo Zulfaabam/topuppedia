@@ -3,6 +3,7 @@ import { useState } from 'react'
 import PaymentModal, { PackageData } from './PaymentModal'
 
 import { useQuery } from '@tanstack/react-query'
+import { NavLink } from 'react-router-dom'
 
 export default function TrendingPackages() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -61,13 +62,13 @@ export default function TrendingPackages() {
               Paket data rekomendasi untuk gaya hidupmu.
             </p>
           </div>
-          <a
-            href='#'
+          <NavLink
+            to='/packages'
             className='flex items-center gap-1 text-brand-primary font-semibold hover:text-[#00556b] transition-colors group'
           >
             Lihat Semua{' '}
             <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
-          </a>
+          </NavLink>
         </div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>

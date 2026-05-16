@@ -1,20 +1,68 @@
 import { Zap, ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { useState, ChangeEvent } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import PaymentModal, { PackageData } from './PaymentModal'
-import { quickTopUpPackages } from '../data/packageOptions'
+import { OPERATOR_PREFIXES } from '../data/operatorPrefixes'
 
 export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [operator, setOperator] = useState('')
+  const [selectedPackageId, setSelectedPackageId] = useState('')
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(
     null,
   )
 
+  const { data: allPackages = [], isLoading: isPackagesLoading } = useQuery({
+    queryKey: ['packages'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:3001/packages')
+      if (!response.ok) throw new Error('Network response was not ok')
+      return response.json()
+    },
+  })
+
+  const filteredPackages = allPackages.filter(
+    (pkg: any) =>
+      operator && pkg.provider.toLowerCase() === operator.toLowerCase(),
+  )
+
+  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '')
+    if (value.length <= 13) {
+      setPhoneNumber(value)
+
+      if (value.length >= 4) {
+        const prefix = value.substring(0, 4)
+        let foundOperator = ''
+
+        for (const [op, prefixes] of Object.entries(OPERATOR_PREFIXES)) {
+          if (prefixes.includes(prefix)) {
+            foundOperator = op
+            break
+          }
+        }
+
+        if (foundOperator !== operator) {
+          setOperator(foundOperator)
+          setSelectedPackageId('')
+        }
+      } else {
+        setOperator('')
+        setSelectedPackageId('')
+      }
+    }
+  }
+
   const handleQuickTopUp = () => {
+    const pkg = filteredPackages.find((p: any) => p.id === selectedPackageId)
+    if (!pkg) return
+
     setSelectedPackage({
-      data: '100GB',
-      validity: '30 Days',
-      priceStr: 'Rp 129.000',
-      network: '5G Ultra Speed',
+      data: pkg.data,
+      validity: pkg.validity,
+      priceStr: pkg.price,
+      network: pkg.features?.[0] || 'High Speed',
     })
     setIsModalOpen(true)
   }
@@ -51,11 +99,12 @@ export default function Hero() {
               <input
                 type='text'
                 placeholder='0812-XXXX-XXXX'
+                value={phoneNumber}
+                onChange={handlePhoneChange}
                 className='w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-gray-900 transition-all font-medium'
-                defaultValue='0812-XXXX-XXXX'
               />
-              <span className='absolute right-4 top-1/2 -translate-y-1/2 font-bold text-brand-primary text-sm pr-1'>
-                IM3
+              <span className='absolute right-4 top-1/2 -translate-y-1/2 font-bold text-brand-primary text-sm pr-1 transition-all duration-300'>
+                {operator || '...'}
               </span>
             </div>
           </div>
@@ -66,16 +115,23 @@ export default function Hero() {
             </label>
             <div className='relative group'>
               <select
-                className='w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 font-medium bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-colors appearance-none cursor-pointer relative z-10'
-                defaultValue=''
+                className='w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 font-medium bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-colors appearance-none cursor-pointer relative z-10 disabled:bg-gray-50 disabled:cursor-not-allowed'
+                value={selectedPackageId}
+                onChange={(e) => setSelectedPackageId(e.target.value)}
+                disabled={!operator || isPackagesLoading}
               >
-                {quickTopUpPackages.map((pkg) => (
-                  <option
-                    key={pkg.value}
-                    value={pkg.value}
-                    disabled={pkg.disabled}
-                  >
-                    {pkg.label}
+                <option value='' disabled>
+                  {!operator
+                    ? 'Pilih operator dulu'
+                    : isPackagesLoading
+                      ? 'Memuat paket...'
+                      : filteredPackages.length === 0
+                        ? 'Paket tidak tersedia'
+                        : 'Pilih Paket'}
+                </option>
+                {filteredPackages.map((pkg: any) => (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.data} - {pkg.price}
                   </option>
                 ))}
               </select>
@@ -87,7 +143,8 @@ export default function Hero() {
 
           <button
             onClick={handleQuickTopUp}
-            className='bg-brand-primary text-white h-12.5 px-8 rounded-lg font-medium hover:bg-[#00556b] transition-colors w-full md:w-auto shadow-sm active:scale-[0.98]'
+            disabled={!selectedPackageId}
+            className='bg-brand-primary text-white h-12.5 px-8 rounded-lg font-medium hover:bg-[#00556b] transition-colors w-full md:w-auto shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-primary'
           >
             Beli Paket
           </button>
@@ -102,6 +159,7 @@ export default function Hero() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         packageData={selectedPackage}
+        initialPhoneNumber={phoneNumber}
       />
     </div>
   )
