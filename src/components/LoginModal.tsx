@@ -46,11 +46,11 @@ export default function LoginModal({
         setPassword('')
         onClose()
       } else {
-        setError('Invalid email or password')
+        setError('Email atau kata sandi salah')
       }
     } catch (err) {
       setError(
-        'Failed to connect to the server. Make sure the mockup backend is running.',
+        'Gagal terhubung ke server. Pastikan backend mockup sedang berjalan.',
       )
       console.error('Login error:', err)
     } finally {
@@ -83,7 +83,7 @@ export default function LoginModal({
             <div className='p-6 md:p-8'>
               <div className='flex items-center justify-between mb-8'>
                 <h2 className='text-[20px] font-bold text-gray-900 tracking-tight'>
-                  Login to TopUpPedia
+                  Masuk ke TopUpPedia
                 </h2>
                 <button
                   onClick={onClose}
@@ -102,7 +102,7 @@ export default function LoginModal({
 
                 <div className='space-y-2'>
                   <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
-                    Email Address
+                    Alamat Email
                   </label>
                   <input
                     type='email'
@@ -117,13 +117,13 @@ export default function LoginModal({
                 <div className='space-y-2'>
                   <div className='flex items-center justify-between'>
                     <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
-                      Password
+                      Kata Sandi
                     </label>
                     <a
                       href='#'
                       className='text-[10px] font-bold text-[#006780] hover:underline'
                     >
-                      Forgot Password?
+                      Lupa Kata Sandi?
                     </a>
                   </div>
                   <div className='relative'>
@@ -157,10 +157,10 @@ export default function LoginModal({
                   {isLoading ? (
                     <>
                       <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin' />
-                      Logging in...
+                      Sedang Masuk...
                     </>
                   ) : (
-                    'Login'
+                    'Masuk'
                   )}
                 </button>
               </form>
@@ -168,12 +168,12 @@ export default function LoginModal({
               <div className='h-px bg-gray-100 my-6'></div>
 
               <p className='text-xs text-center text-gray-500 font-medium'>
-                Don't have an account?{' '}
+                Belum punya akun?{' '}
                 <a
                   href='#'
                   className='font-bold text-[#006780] hover:underline'
                 >
-                  Sign Up
+                  Daftar
                 </a>
               </p>
             </div>

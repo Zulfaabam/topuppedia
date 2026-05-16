@@ -39,7 +39,7 @@ export default function Navbar() {
                   : 'hover:text-brand-primary transition-colors py-1 border-b-2 border-transparent'
               }
             >
-              Packages
+              Paket
             </NavLink>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function Navbar() {
             <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400' />
             <input
               type='text'
-              placeholder='Search packages...'
+              placeholder='Cari paket...'
               className='pl-10 pr-4 py-2 w-64 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/20 transition-shadow'
             />
           </div>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className='text-xs font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-wider'
               >
-                Logout
+                Keluar
               </button>
               <Link
                 to='/account'
@@ -82,7 +82,7 @@ export default function Navbar() {
                 onClick={() => setIsLoginOpen(true)}
                 className='bg-brand-primary text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-[#00556b] transition-colors shadow-sm whitespace-nowrap'
               >
-                Login
+                Masuk
               </button>
             </>
           )}

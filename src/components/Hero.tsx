@@ -45,7 +45,7 @@ export default function Hero() {
         <div className='grid grid-cols-1 md:grid-cols-[1fr_1.5fr_auto] gap-4 items-end'>
           <div className='space-y-2'>
             <label className='text-sm font-medium text-gray-700'>
-              Phone Number
+              Nomor Telepon
             </label>
             <div className='relative'>
               <input
@@ -62,7 +62,7 @@ export default function Hero() {
 
           <div className='space-y-2'>
             <label className='text-sm font-medium text-gray-700'>
-              Select Package
+              Pilih Paket
             </label>
             <div className='relative group'>
               <select

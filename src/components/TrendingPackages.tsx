@@ -1,58 +1,8 @@
-import {
-  LayoutGrid,
-  Smartphone,
-  Zap,
-  Monitor,
-  PawPrint,
-  ArrowRight,
-  CheckCircle2,
-} from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 import PaymentModal, { PackageData } from './PaymentModal'
 
-const categories = [
-  { icon: LayoutGrid, label: 'Kategori', active: true },
-  { icon: Smartphone, label: 'Handphone & Tablet' },
-  { icon: Zap, label: 'Top-Up & Tagihan' },
-  { icon: Monitor, label: 'Elektronik' },
-  { icon: PawPrint, label: 'Perawatan Hewan' },
-]
-
-const packages = [
-  {
-    provider: 'Telkomsel',
-    providerColor: 'text-green-600',
-    data: '100GB',
-    validity: '30 Days Validity',
-    features: [
-      '5G Ultra Speed',
-      'Free Disney+ Hotstar',
-      'Unlimited Discovery Max',
-    ],
-    oldPrice: 'Rp 150.000',
-    price: 'Rp 129.000',
-    badge: 'Best Seller',
-    badgeColor: 'bg-brand-tertiary text-white',
-  },
-  {
-    provider: 'XL Axiata',
-    providerColor: 'text-blue-600',
-    data: '50GB',
-    validity: '30 Days Validity',
-    features: ['Unlimited YouTube', '60 Min All Operator', 'Xtra Combo VIP'],
-    price: 'Rp 89.000',
-    badge: 'New Promo',
-    badgeColor: 'bg-[#88fc85] text-green-900',
-  },
-  {
-    provider: 'IM3',
-    providerColor: 'text-orange-500',
-    data: '75GB',
-    validity: '30 Days Validity',
-    features: ['Safe Quota Guarantee', 'Data Rollover', 'Freedom Internet'],
-    price: 'Rp 115.000',
-  },
-]
+import { useQuery } from '@tanstack/react-query'
 
 export default function TrendingPackages() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -60,15 +10,43 @@ export default function TrendingPackages() {
     null,
   )
 
+  const {
+    data: packages,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['packages', 'recommended'],
+    queryFn: async () => {
+      const response = await fetch(
+        'http://localhost:3001/packages?recommended=true',
+      )
+      if (!response.ok) throw new Error('Network response was not ok')
+      return response.json()
+    },
+  })
+
   const handleBuy = (pkg: any) => {
     setSelectedPackage({
       data: pkg.data,
       validity: pkg.validity,
       priceStr: pkg.price,
-      network: pkg.features[0] || 'High Speed',
+      network: pkg.features?.[0] || 'High Speed',
     })
     setIsModalOpen(true)
   }
+
+  if (isLoading)
+    return (
+      <div className='py-20 text-center text-gray-500 font-medium'>
+        Memuat rekomendasi paket...
+      </div>
+    )
+  if (error)
+    return (
+      <div className='py-20 text-center text-red-500 font-medium'>
+        Gagal memuat paket.
+      </div>
+    )
 
   return (
     <div className='flex flex-col gap-16'>
@@ -77,17 +55,17 @@ export default function TrendingPackages() {
         <div className='flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4'>
           <div>
             <h2 className='text-3xl font-bold text-gray-900 mb-2 tracking-tight'>
-              Trending Packages
+              Rekomendasi Paket
             </h2>
             <p className='text-gray-600'>
-              Recommended high-speed data plans for your lifestyle.
+              Paket data rekomendasi untuk gaya hidupmu.
             </p>
           </div>
           <a
             href='#'
             className='flex items-center gap-1 text-brand-primary font-semibold hover:text-[#00556b] transition-colors group'
           >
-            View All{' '}
+            Lihat Semua{' '}
             <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
           </a>
         </div>
@@ -117,7 +95,7 @@ export default function TrendingPackages() {
               <div className='flex-1 space-y-4 mb-8'>
                 {pkg.features.map((feature, fIdx) => (
                   <div key={fIdx} className='flex items-center gap-3'>
-                    <CheckCircle2 className='w-5 h-5 text-green-500 flex-shrink-0' />
+                    <CheckCircle2 className='w-5 h-5 text-green-500 shrink-0' />
                     <span className='text-gray-700 text-sm font-medium'>
                       {feature}
                     </span>
@@ -142,7 +120,7 @@ export default function TrendingPackages() {
                   onClick={() => handleBuy(pkg)}
                   className='bg-brand-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#00556b] transition-colors shadow-sm active:scale-[0.98]'
                 >
-                  Buy Now
+                  Beli Sekarang
                 </button>
               </div>
             </div>

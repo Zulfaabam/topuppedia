@@ -19,6 +19,193 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=John"
     }
   ],
-  "transactions": [],
-  "products": []
+  "transactions": [
+    {
+      "id": "1",
+      "userId": "2",
+      "date": "24 Okt 2023",
+      "title": "100GB 30 Hari",
+      "desc": "Paket Flash Speed",
+      "amount": "Rp 129.000",
+      "status": "Success"
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "date": "12 Okt 2023",
+      "title": "Top Up Saldo",
+      "desc": "Pembayaran OVO",
+      "amount": "Rp 200.000",
+      "status": "Success"
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "date": "24 Sep 2023",
+      "title": "50GB 30 Hari",
+      "desc": "Spesial Streamer",
+      "amount": "Rp 89.000",
+      "status": "Success"
+    },
+    {
+      "id": "4",
+      "userId": "2",
+      "date": "10 Sep 2023",
+      "title": "Add-on 10GB",
+      "desc": "Booster Tengah Bulan",
+      "amount": "Rp 25.000",
+      "status": "Pending"
+    },
+    {
+      "id": "5",
+      "userId": "2",
+      "date": "24 Agt 2023",
+      "title": "100GB 30 Hari",
+      "desc": "Paket Flash Speed",
+      "amount": "Rp 129.000",
+      "status": "Success"
+    }
+  ],
+  "packages": [
+    {
+      "id": "1",
+      "provider": "Telkomsel",
+      "providerColor": "text-green-600",
+      "data": "100GB",
+      "validity": "Masa Aktif 30 Hari",
+      "features": [
+        "Kecepatan 5G Ultra",
+        "Gratis Disney+ Hotstar",
+        "Unlimited Discovery Max"
+      ],
+      "oldPrice": "Rp 150.000",
+      "price": "Rp 129.000",
+      "badge": "Terlaris",
+      "badgeColor": "bg-brand-tertiary text-white",
+      "category": "best-seller",
+      "recommended": true
+    },
+    {
+      "id": "2",
+      "provider": "XL Axiata",
+      "providerColor": "text-blue-600",
+      "data": "50GB",
+      "validity": "Masa Aktif 30 Hari",
+      "features": [
+        "Unlimited YouTube",
+        "60 Menit Semua Operator",
+        "Xtra Combo VIP"
+      ],
+      "price": "Rp 89.000",
+      "badge": "Promo Baru",
+      "badgeColor": "bg-[#88fc85] text-green-900",
+      "category": "promo",
+      "recommended": true
+    },
+    {
+      "id": "3",
+      "provider": "IM3",
+      "providerColor": "text-orange-500",
+      "data": "75GB",
+      "validity": "Masa Aktif 30 Hari",
+      "features": [
+        "Garansi Kuota Aman",
+        "Data Rollover",
+        "Freedom Internet"
+      ],
+      "price": "Rp 115.000",
+      "category": "best-seller",
+      "recommended": true
+    },
+    {
+      "id": "4",
+      "provider": "Booster",
+      "data": "15GB",
+      "validity": "Masa Aktif 7 Hari",
+      "bonusLabel": "Bonus Aplikasi",
+      "bonusValue": "TikTok + IG",
+      "oldPrice": "Rp 35.000",
+      "price": "Rp 22.500",
+      "badge": "Promo Baru",
+      "badgeColor": "bg-[#88fc85] text-green-900",
+      "providerColor": "text-blue-500",
+      "category": "promo",
+      "recommended": false
+    },
+    {
+      "id": "5",
+      "provider": "Telkomsel",
+      "data": "25GB",
+      "validity": "Masa Aktif 15 Hari",
+      "bonusLabel": "Extra Kuota",
+      "bonusValue": "5GB Malam",
+      "oldPrice": "Rp 65.000",
+      "price": "Rp 48.000",
+      "providerColor": "text-green-600",
+      "category": "promo",
+      "recommended": false
+    },
+    {
+      "id": "6",
+      "provider": "XL",
+      "data": "10GB",
+      "validity": "Masa Aktif 3 Hari",
+      "bonusLabel": "Sosial Media",
+      "bonusValue": "Chat Tanpa Batas",
+      "oldPrice": "Rp 25.000",
+      "price": "Rp 15.000",
+      "providerColor": "text-blue-600",
+      "category": "promo",
+      "recommended": false
+    },
+    {
+      "id": "7",
+      "provider": "Smartfren",
+      "data": "Unlimited",
+      "validity": "Masa Aktif 28 Hari",
+      "bonusLabel": "FUP",
+      "bonusValue": "1.5GB/Hari",
+      "oldPrice": "Rp 90.000",
+      "price": "Rp 72.000",
+      "providerColor": "text-orange-600",
+      "category": "promo",
+      "recommended": false
+    },
+    {
+      "id": "8",
+      "provider": "Generic",
+      "data": "2GB",
+      "price": "Rp 5.000",
+      "validity": "1 Hari",
+      "category": "budget",
+      "recommended": false
+    },
+    {
+      "id": "9",
+      "provider": "Generic",
+      "data": "5GB",
+      "price": "Rp 12.000",
+      "validity": "3 Hari",
+      "category": "budget",
+      "recommended": false
+    },
+    {
+      "id": "10",
+      "provider": "Generic",
+      "data": "1GB",
+      "price": "Rp 2.500",
+      "validity": "1 Hari",
+      "category": "budget",
+      "recommended": false
+    },
+    {
+      "id": "11",
+      "provider": "Generic",
+      "data": "8GB",
+      "price": "Rp 20.000",
+      "validity": "7 Hari",
+      "category": "budget",
+      "recommended": false
+    }
+  ]
 }

@@ -51,7 +51,7 @@ export default function PaymentModal({ isOpen, onClose, packageData }: PaymentMo
           >
             {/* Header */}
             <div className="bg-[#f8f9ff] px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-[17px] font-bold text-gray-900 tracking-tight">Payment Verification</h2>
+              <h2 className="text-[17px] font-bold text-gray-900 tracking-tight">Verifikasi Pembayaran</h2>
               <button 
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1"
@@ -63,20 +63,20 @@ export default function PaymentModal({ isOpen, onClose, packageData }: PaymentMo
             {/* Content */}
             <div className="p-6">
               <div className="mb-6">
-                <h3 className="text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Order Summary</h3>
+                <h3 className="text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Ringkasan Pesanan</h3>
                 <div className="bg-[#eff4ff] rounded-xl p-4 space-y-3">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Phone Number</span>
+                    <span className="text-gray-500">Nomor Telepon</span>
                     <span className="font-semibold text-gray-900">0812-XXXX-XXXX</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Package</span>
+                    <span className="text-gray-500">Paket</span>
                     <span className="font-semibold text-gray-900">
-                      {packageData?.data || '100GB'} <span className="font-normal text-gray-600">({(packageData?.validity || '30 Days').replace(' Validity', '')})</span>
+                      {packageData?.data || '100GB'} <span className="font-normal text-gray-600">({(packageData?.validity || '30 Hari').replace(' Validity', '').replace(' Days', ' Hari')})</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Network</span>
+                    <span className="text-gray-500">Jaringan</span>
                     <span className="font-semibold text-[#006780]">
                       {packageData?.network || '5G Ultra Speed'}
                     </span>
@@ -85,36 +85,36 @@ export default function PaymentModal({ isOpen, onClose, packageData }: PaymentMo
               </div>
 
               <div className="mb-6">
-                <h3 className="text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Payment Details</h3>
+                <h3 className="text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Detail Pembayaran</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500">Subtotal</span>
                     <span className="text-gray-900 font-medium">{packageData?.priceStr || formatPrice(defaultSubtotal)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500">Service Fee</span>
+                    <span className="text-gray-500">Biaya Layanan</span>
                     <span className="text-gray-900 font-medium">{formatPrice(serviceFee)}</span>
                   </div>
                 </div>
                 <div className="h-px bg-gray-200 my-4"></div>
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-gray-900 text-base">Total Payment</span>
+                  <span className="font-bold text-gray-900 text-base">Total Pembayaran</span>
                   <span className="text-lg font-bold text-[#006780]">{formatPrice(total)}</span>
                 </div>
               </div>
 
               <button 
                 onClick={() => {
-                  alert('Payment successful!');
+                  alert('Pembayaran berhasil!');
                   onClose();
                 }}
                 className="w-full bg-[#006780] text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm mb-4"
               >
-                Pay Now
+                Bayar Sekarang
               </button>
 
               <p className="text-[10px] text-center text-gray-400 font-medium">
-                By clicking Pay Now, you agree to our Terms and Conditions.
+                Dengan mengklik Bayar Sekarang, kamu menyetujui Syarat dan Ketentuan kami.
               </p>
             </div>
           </motion.div>

@@ -6,10 +6,10 @@ export default function Footer() {
           <h3 className='text-2xl font-bold text-gray-900 tracking-tight'>
             TopUpPedia
           </h3>
-          <p className='text-gray-600 text-sm leading-relaxed max-w-sm'>
-            © 2026 TopUpPedia. All rights reserved. Your high-speed data
-            partner. Empowering your digital lifestyle with seamless
-            connectivity.
+          <p className='text-gray-600 text-sm leading-relaxed max-w-sm text-right'>
+            © 2026 TopUpPedia. Seluruh hak cipta dilindungi. Partner paket data
+            kecepatan tinggimu. Memberdayakan gaya hidup digitalmu dengan
+            konektivitas tanpa batas.
           </p>
         </div>
       </div>
