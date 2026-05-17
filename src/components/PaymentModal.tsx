@@ -80,6 +80,7 @@ export default function PaymentModal({
         desc: `${packageData?.validity || '30 Hari'} - ${phoneNumber}`,
         amount: formatPrice(total),
         status: 'Success',
+        phone: phoneNumber,
       }
 
       const response = await fetch('http://localhost:3001/transactions', {

@@ -1,4 +1,4 @@
-import { Zap, Info } from 'lucide-react'
+import { Zap, Info, History } from 'lucide-react'
 import { useState, ChangeEvent } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import PaymentModal, { PackageData } from './PaymentModal'
@@ -18,6 +18,7 @@ export default function Hero() {
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(
     null,
   )
+  const [showDropdown, setShowDropdown] = useState(false)
 
   const { data: allPackages = [], isLoading: isPackagesLoading } = useQuery({
     queryKey: ['packages'],
@@ -27,6 +28,52 @@ export default function Hero() {
       return response.json()
     },
   })
+
+  // Fetch logged in user's transactions
+  const { data: userTransactions = [] } = useQuery({
+    queryKey: ['transactions', user?.id],
+    queryFn: async () => {
+      const response = await fetch(
+        `http://localhost:3001/transactions?userId=${user.id}`,
+      )
+      if (!response.ok) throw new Error('Failed to fetch transactions')
+      return response.json()
+    },
+    enabled: !!user?.id,
+  })
+
+  // Calculate unique, valid previous phone numbers from transactions
+  const autocompleteOptions: string[] = Array.from(
+    new Set(
+      userTransactions
+        .map((tx: any) => tx.phone)
+        .filter((phone?: string) => !!phone),
+    ),
+  )
+
+  const filteredOptions = autocompleteOptions.filter((option) =>
+    option.startsWith(phoneNumber),
+  )
+
+  const getOperatorForPrefix = (phone: string) => {
+    if (phone.length >= 4) {
+      const prefix = phone.substring(0, 4)
+      for (const [op, prefixes] of Object.entries(OPERATOR_PREFIXES)) {
+        if (prefixes.includes(prefix)) {
+          return op
+        }
+      }
+    }
+    return ''
+  }
+
+  const handleSelectOption = (option: string) => {
+    setPhoneNumber(option)
+    setShowDropdown(false)
+
+    const foundOperator = getOperatorForPrefix(option)
+    setOperator(foundOperator)
+  }
 
   const filteredPackages = allPackages.filter(
     (pkg: any) =>
@@ -38,20 +85,8 @@ export default function Hero() {
     if (value.length <= 13) {
       setPhoneNumber(value)
 
-      if (value.length >= 4) {
-        const prefix = value.substring(0, 4)
-        let foundOperator = ''
-
-        for (const [op, prefixes] of Object.entries(OPERATOR_PREFIXES)) {
-          if (prefixes.includes(prefix)) {
-            foundOperator = op
-            break
-          }
-        }
-        setOperator(foundOperator)
-      } else {
-        setOperator('')
-      }
+      const foundOperator = getOperatorForPrefix(value)
+      setOperator(foundOperator)
     }
   }
 
@@ -123,6 +158,8 @@ export default function Hero() {
               placeholder='Contoh: 081234567890'
               value={phoneNumber}
               onChange={handlePhoneChange}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
               className={`w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary/20 focus:bg-white text-lg md:text-xl font-bold text-gray-900 transition-all placeholder:text-gray-300 placeholder:font-medium ${
                 operator ? 'pr-28' : 'pr-10'
               }`}
@@ -144,6 +181,45 @@ export default function Hero() {
                 </div>
               )}
             </div>
+
+            {/* Autocomplete Dropdown */}
+            {showDropdown && filteredOptions.length > 0 && (
+              <div className='absolute left-0 right-0 top-full mt-2 bg-white rounded-xl border border-gray-100 shadow-xl z-20 max-h-60 overflow-y-auto divide-y divide-gray-50 animate-in fade-in slide-in-from-top-2 duration-200'>
+                <div className='px-4 py-2 bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-wider'>
+                  Nomor Pernah Digunakan
+                </div>
+                {filteredOptions.map((option) => {
+                  const opPreview = getOperatorForPrefix(option)
+                  return (
+                    <button
+                      key={option}
+                      type='button'
+                      onMouseDown={() => handleSelectOption(option)}
+                      className='w-full px-4 py-3 text-left hover:bg-brand-surface-light flex items-center justify-between transition-colors group/item cursor-pointer'
+                    >
+                      <div className='flex items-center gap-3'>
+                        <div className='w-8 h-8 rounded-lg bg-brand-surface flex items-center justify-center text-brand-primary group-hover/item:bg-white transition-colors shrink-0'>
+                          <History className='w-4 h-4' />
+                        </div>
+                        <span className='font-bold text-gray-900 text-sm md:text-base tracking-wide'>
+                          {option}
+                        </span>
+                      </div>
+                      {opPreview && (
+                        <span
+                          className={`text-[10px] font-bold px-2.5 py-0.5 rounded-lg border uppercase tracking-wider ${
+                            OPERATOR_COLORS[opPreview.toLowerCase()] ||
+                            DEFAULT_OPERATOR_COLOR
+                          }`}
+                        >
+                          {opPreview}
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </div>
           <div className='flex items-center gap-2 text-[10px] md:text-[11px] text-gray-400 font-medium px-1'>
             <Info className='size-3' />

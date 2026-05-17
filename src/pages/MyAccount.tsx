@@ -150,8 +150,9 @@ export default function MyAccount() {
 
             <div className='overflow-x-auto border-b border-gray-200'>
               {/* Table Header */}
-              <div className='min-w-150 grid grid-cols-[1fr_2fr_1.5fr_1fr_auto] gap-4 px-6 py-4 bg-brand-surface text-xs font-bold text-gray-600 border-b border-gray-200'>
+              <div className='min-w-150 grid grid-cols-[1fr_1.2fr_2fr_1.2fr_1fr] gap-4 px-6 py-4 bg-brand-surface text-xs font-bold text-gray-600 border-b border-gray-200'>
                 <div>Tanggal</div>
+                <div>No. Telepon</div>
                 <div>Nama Paket</div>
                 <div>Jumlah</div>
                 <div>Status</div>
@@ -177,10 +178,14 @@ export default function MyAccount() {
                   transactions?.map((tx: any) => (
                     <div
                       key={tx.id}
-                      className='grid grid-cols-[1fr_2fr_1.5fr_1fr_auto] gap-4 px-6 py-5 items-center border-b border-gray-100 hover:bg-gray-50/50 transition-colors last:border-0'
+                      className='grid grid-cols-[1fr_1.2fr_2fr_1.2fr_1fr] gap-4 px-6 py-5 items-center border-b border-gray-100 hover:bg-gray-50/50 transition-colors last:border-0'
                     >
                       <div className='text-sm text-gray-700 font-medium'>
                         {tx.date}
+                      </div>
+
+                      <div className='text-sm font-semibold text-gray-900 font-mono'>
+                        {tx.phone || '-'}
                       </div>
 
                       <div>
