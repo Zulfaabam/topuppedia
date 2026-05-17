@@ -1,10 +1,14 @@
 # 📱 TopUpPedia - Top Up Paket Internet Cepat dan Mudah
 
+![Screenshot](public/topuppedia-home.png)
+
 TopUpPedia adalah aplikasi web pengisian pulsa dan paket data modern yang dirancang dengan antarmuka pengguna premium, deteksi provider otomatis, dan alur transaksi yang cepat, mudah, aman serta interaktif.
 
 ---
 
 ## 🌟 Fitur Utama
+
+![Flow](public/topuppedia-flow.png)
 
 - 🔍 **Deteksi Provider Otomatis**: Cukup masukkan nomor telepon, dan sistem akan langsung mengenali provider (Telkomsel, Indosat, XL, Tri, Axis, Smartfren) berdasarkan 4 digit pertama.
 - 🛡️ **Validasi Cerdas & Error Modal**: Memastikan nomor telepon memiliki panjang yang tepat (10-13 digit) dan provider terdaftar. Dilengkapi dengan komponen _Error Modal_ custom berbasis animasi yang modern jika terjadi kesalahan pengisian.
