@@ -100,7 +100,7 @@ export default function LoginModal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className='text-gray-400 hover:text-gray-600 transition-colors p-1'
+                  className='text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer'
                 >
                   <X className='w-5 h-5' />
                 </button>
@@ -145,7 +145,7 @@ export default function LoginModal({
                     <button
                       type='button'
                       onClick={() => setShowPassword(!showPassword)}
-                      className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 p-1'
+                      className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 p-1 cursor-pointer'
                     >
                       {showPassword ? (
                         <EyeOff className='w-4 h-4' />
@@ -159,7 +159,7 @@ export default function LoginModal({
                 <button
                   type='submit'
                   disabled={isLoading}
-                  className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm mt-2 mb-2 inline-flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed'
+                  className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm mt-2 mb-2 inline-flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer'
                 >
                   {isLoading ? (
                     <>
@@ -178,7 +178,7 @@ export default function LoginModal({
                 Belum punya akun?{' '}
                 <button
                   onClick={openSignupModal}
-                  className='font-bold text-brand-primary hover:underline'
+                  className='font-bold text-brand-primary hover:underline cursor-pointer'
                 >
                   Daftar
                 </button>

@@ -195,7 +195,7 @@ export default function PaymentModal({
             <button
               onClick={() => setStep('verification')}
               disabled={!phoneNumber}
-              className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm mb-4 disabled:opacity-50 disabled:cursor-not-allowed'
+              className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm mb-4 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
             >
               Bayar Sekarang
             </button>
@@ -254,13 +254,13 @@ export default function PaymentModal({
               <button
                 onClick={handleVerify}
                 disabled={!inputCode}
-                className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm disabled:opacity-50'
+                className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm disabled:opacity-50 cursor-pointer'
               >
                 Verifikasi & Bayar
               </button>
               <button
                 onClick={() => setStep('summary')}
-                className='text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors py-2'
+                className='text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors py-2 cursor-pointer'
               >
                 Kembali ke Ringkasan
               </button>
@@ -312,7 +312,7 @@ export default function PaymentModal({
 
             <button
               onClick={onClose}
-              className='w-full bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg active:scale-[0.98]'
+              className='w-full bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg active:scale-[0.98] cursor-pointer'
             >
               Selesai
             </button>
@@ -331,7 +331,7 @@ export default function PaymentModal({
             <p className='text-sm text-gray-500 mb-8'>{errorMsg}</p>
             <button
               onClick={() => setStep('summary')}
-              className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm'
+              className='w-full bg-brand-primary text-white py-3.5 rounded-lg font-bold hover:bg-[#00556b] transition-colors shadow-sm cursor-pointer'
             >
               Coba Lagi
             </button>
@@ -370,7 +370,7 @@ export default function PaymentModal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className='text-gray-400 hover:text-gray-600 transition-colors p-1'
+                  className='text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer'
                 >
                   <X className='w-5 h-5' />
                 </button>

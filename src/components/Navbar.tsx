@@ -30,7 +30,7 @@ export default function Navbar() {
         <div className='flex items-center gap-12'>
           <Link
             to='/'
-            className='text-2xl font-bold text-brand-primary tracking-tight'
+            className='text-2xl font-bold text-brand-primary tracking-tight cursor-pointer'
           >
             TopUpPedia
           </Link>
@@ -41,7 +41,7 @@ export default function Navbar() {
             <>
               <button
                 onClick={handleLogout}
-                className='text-xs font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-wider'
+                className='text-xs font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-wider cursor-pointer'
               >
                 Keluar
               </button>
@@ -64,7 +64,7 @@ export default function Navbar() {
             <>
               <button
                 onClick={openLoginModal}
-                className='bg-brand-primary text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-[#00556b] transition-colors shadow-sm whitespace-nowrap'
+                className='bg-brand-primary text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-[#00556b] transition-colors shadow-sm whitespace-nowrap cursor-pointer'
               >
                 Masuk
               </button>

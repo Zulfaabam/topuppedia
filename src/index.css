@@ -26,6 +26,10 @@ body {
   color: #161c24;
 }
 
+button, a, [role="button"] {
+  cursor: pointer;
+}
+
 @keyframes aurora-float-1 {
   0%, 100% {
     transform: translate(0, 0) scale(1);

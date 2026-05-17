@@ -131,7 +131,7 @@ export default function MyAccount() {
 
             <button 
               onClick={() => setIsEditOpen(true)}
-              className='w-full mt-8 py-3.5 border-2 border-brand-primary text-brand-primary rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-brand-surface-light transition-colors active:scale-[0.98]'
+              className='w-full mt-8 py-3.5 border-2 border-brand-primary text-brand-primary rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-brand-surface-light transition-colors active:scale-[0.98] cursor-pointer'
             >
               <Settings className='w-5 h-5' />
               Edit Profile Details
@@ -238,7 +238,7 @@ export default function MyAccount() {
                 </h3>
                 <button
                   onClick={() => setIsEditOpen(false)}
-                  className='text-gray-400 hover:text-gray-600 transition-colors p-1'
+                  className='text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer'
                 >
                   <X className='w-5 h-5' />
                 </button>
@@ -282,14 +282,14 @@ export default function MyAccount() {
                   <button
                     type='button'
                     onClick={() => setIsEditOpen(false)}
-                    className='flex-1 py-3 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl font-bold text-sm hover:bg-gray-100 active:scale-[0.98] transition-all'
+                    className='flex-1 py-3 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl font-bold text-sm hover:bg-gray-100 active:scale-[0.98] transition-all cursor-pointer'
                   >
                     Batal
                   </button>
                   <button
                     type='submit'
                     disabled={isUpdating}
-                    className='flex-1 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm hover:bg-[#00556b] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm'
+                    className='flex-1 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm hover:bg-[#00556b] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm cursor-pointer'
                   >
                     {isUpdating ? 'Menyimpan...' : 'Simpan Perubahan'}
                   </button>

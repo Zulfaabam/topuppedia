@@ -3,6 +3,7 @@ import { useState, ChangeEvent } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import PaymentModal, { PackageData } from './PaymentModal'
 import PackageCard from './PackageCard'
+import ErrorModal from './ErrorModal'
 import { OPERATOR_PREFIXES } from '../data/operatorPrefixes'
 import { OPERATOR_COLORS, DEFAULT_OPERATOR_COLOR } from '../data/operatorColors'
 import { useUser } from '../contexts/UserContext'
@@ -10,6 +11,8 @@ import { useUser } from '../contexts/UserContext'
 export default function Hero() {
   const { user, openLoginModal } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [operator, setOperator] = useState('')
   const [selectedPackage, setSelectedPackage] = useState<PackageData | null>(
@@ -55,6 +58,12 @@ export default function Hero() {
   const handleBuy = (pkg: any) => {
     if (!user) {
       openLoginModal()
+      return
+    }
+
+    if (!phoneNumber || phoneNumber.length < 10 || phoneNumber.length > 13 || !operator) {
+      setErrorMsg('Mohon masukkan nomor telepon yang valid (10-13 digit) dengan provider yang sesuai.')
+      setIsErrorModalOpen(true)
       return
     }
 
@@ -181,7 +190,7 @@ export default function Hero() {
                 ))}
               </div>
             ) : (
-              <div className='bg-white rounded-3xl p-12 text-center border-2 border-dashed border-gray-100'>
+              <div className='bg-white rounded-2xl max-w-2xl p-12 text-center border-2 border-dashed border-gray-100'>
                 <p className='text-gray-500 font-medium'>
                   Maaf, tidak ada paket tersedia untuk provider ini saat ini.
                 </p>
@@ -196,6 +205,12 @@ export default function Hero() {
         onClose={() => setIsModalOpen(false)}
         packageData={selectedPackage}
         initialPhoneNumber={phoneNumber}
+      />
+      
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMsg}
       />
     </div>
   )
