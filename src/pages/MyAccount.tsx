@@ -1,17 +1,61 @@
-import { Smartphone, Mail, Settings, Filter, ReceiptText } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { Smartphone, Mail, Settings, X } from 'lucide-react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
+import { useUser } from '../contexts/UserContext'
 
 export default function MyAccount() {
-  const [user, setUser] = useState<any>(null)
+  const { user, login } = useUser()
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [editName, setEditName] = useState('')
+  const [editPhone, setEditPhone] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [updateError, setUpdateError] = useState('')
 
+  // Prefill when modal opens
   useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    if (isEditOpen && user) {
+      setEditName(user.name || '')
+      setEditPhone(user.phone || '')
+      setUpdateError('')
     }
-  }, [])
+  }, [isEditOpen, user])
+
+  const handleSaveProfile = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!user) return
+
+    setIsUpdating(true)
+    setUpdateError('')
+
+    try {
+      const response = await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: editName,
+          phone: editPhone,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Gagal memperbarui profil di database')
+      }
+
+      const updatedUser = await response.json()
+      
+      // Update global user context & localStorage
+      login(updatedUser)
+      setIsEditOpen(false)
+    } catch (err: any) {
+      setUpdateError('Gagal menyimpan detail profil. Silakan coba lagi.')
+      console.error('Update profile error:', err)
+    } finally {
+      setIsUpdating(false)
+    }
+  }
 
   const {
     data: transactions,
@@ -65,7 +109,7 @@ export default function MyAccount() {
                     Nomor Telepon
                   </p>
                   <p className='text-sm font-bold text-gray-900 truncate'>
-                    0812-XXXX-XXXX
+                    {user?.phone || 'Belum diatur'}
                   </p>
                 </div>
               </div>
@@ -85,7 +129,10 @@ export default function MyAccount() {
               </div>
             </div>
 
-            <button className='w-full mt-8 py-3.5 border-2 border-brand-primary text-brand-primary rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-brand-surface-light transition-colors active:scale-[0.98]'>
+            <button 
+              onClick={() => setIsEditOpen(true)}
+              className='w-full mt-8 py-3.5 border-2 border-brand-primary text-brand-primary rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-brand-surface-light transition-colors active:scale-[0.98]'
+            >
               <Settings className='w-5 h-5' />
               Edit Profile Details
             </button>
@@ -99,10 +146,6 @@ export default function MyAccount() {
               <h2 className='text-[19px] font-bold text-gray-900 tracking-tight'>
                 Riwayat Transaksi
               </h2>
-              <button className='flex items-center gap-2 text-brand-primary font-bold text-sm hover:text-[#004d61] transition-colors'>
-                <Filter className='w-4 h-4' />
-                Filter
-              </button>
             </div>
 
             <div className='overflow-x-auto border-b border-gray-200'>
@@ -112,16 +155,14 @@ export default function MyAccount() {
                 <div>Nama Paket</div>
                 <div>Jumlah</div>
                 <div>Status</div>
-                <div className='w-6'></div>{' '}
-                {/* Placeholder for receipt icon spacing */}
               </div>
 
               {/* Table Body */}
               <div className='min-w-150 flex flex-col'>
                 {isLoading ? (
-                    <div className='py-12 text-center text-gray-500 font-medium italic'>
-                      Memuat transaksi...
-                    </div>
+                  <div className='py-12 text-center text-gray-500 font-medium italic'>
+                    Memuat transaksi...
+                  </div>
                 ) : !user ? (
                   <div className='py-12 px-6 text-center'>
                     <p className='text-gray-500 mb-4 font-medium italic'>
@@ -129,9 +170,9 @@ export default function MyAccount() {
                     </p>
                   </div>
                 ) : transactions?.length === 0 ? (
-                    <div className='py-12 text-center text-gray-500 font-medium italic'>
-                      Transaksi tidak ditemukan.
-                    </div>
+                  <div className='py-12 text-center text-gray-500 font-medium italic'>
+                    Transaksi tidak ditemukan.
+                  </div>
                 ) : (
                   transactions?.map((tx: any) => (
                     <div
@@ -163,30 +204,101 @@ export default function MyAccount() {
                               : 'bg-[#ffdad6] text-[#93000a]'
                           }`}
                         >
-                          {tx.status === 'Success' ? 'Berhasil' : tx.status === 'Pending' ? 'Menunggu' : tx.status}
+                          {tx.status === 'Success'
+                            ? 'Berhasil'
+                            : tx.status === 'Pending'
+                              ? 'Menunggu'
+                              : tx.status}
                         </span>
                       </div>
-
-                      <button
-                        className='text-gray-400 hover:text-brand-primary transition-colors p-1'
-                        title='Lihat Bukti'
-                      >
-                        <ReceiptText className='w-5 h-5' />
-                      </button>
                     </div>
                   ))
                 )}
               </div>
             </div>
-
-            <div className='p-0 mt-auto'>
-              <button className='w-full py-5 text-center text-brand-primary font-bold text-sm hover:bg-brand-surface transition-colors'>
-                Lihat Semua Transaksi
-              </button>
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Details Modal */}
+      {isEditOpen && (
+        <div className='fixed inset-0 z-100 flex items-center justify-center p-4 animate-in fade-in duration-200'>
+          {/* Backdrop */}
+          <div
+            onClick={() => setIsEditOpen(false)}
+            className='absolute inset-0 bg-black/40 backdrop-blur-sm'
+          />
+
+          {/* Modal Container */}
+          <div className='relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-200 z-10'>
+            <div className='p-6 md:p-8'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='text-lg font-bold text-gray-900 tracking-tight'>
+                  Edit Detail Profil
+                </h3>
+                <button
+                  onClick={() => setIsEditOpen(false)}
+                  className='text-gray-400 hover:text-gray-600 transition-colors p-1'
+                >
+                  <X className='w-5 h-5' />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveProfile} className='space-y-5'>
+                {updateError && (
+                  <div className='p-3 text-xs font-bold text-red-600 bg-red-50 rounded-lg border border-red-100'>
+                    {updateError}
+                  </div>
+                )}
+
+                <div className='space-y-2'>
+                  <label className='text-xs font-bold text-gray-500 uppercase tracking-wider'>
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type='text'
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    required
+                    placeholder='Nama lengkap Anda'
+                    className='w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary text-gray-900 text-sm font-semibold transition-all'
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-xs font-bold text-gray-500 uppercase tracking-wider'>
+                    Nomor Telepon
+                  </label>
+                  <input
+                    type='text'
+                    value={editPhone}
+                    onChange={(e) => setEditPhone(e.target.value)}
+                    placeholder='Contoh: 081234567890'
+                    className='w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary text-gray-900 text-sm font-semibold transition-all'
+                  />
+                </div>
+
+                <div className='flex items-center gap-3 mt-8'>
+                  <button
+                    type='button'
+                    onClick={() => setIsEditOpen(false)}
+                    className='flex-1 py-3 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl font-bold text-sm hover:bg-gray-100 active:scale-[0.98] transition-all'
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type='submit'
+                    disabled={isUpdating}
+                    className='flex-1 py-3 bg-brand-primary text-white rounded-xl font-bold text-sm hover:bg-[#00556b] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm'
+                  >
+                    {isUpdating ? 'Menyimpan...' : 'Simpan Perubahan'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

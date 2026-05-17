@@ -15,7 +15,52 @@ html {
   scrollbar-gutter: stable;
 }
 
+@media (max-width: 767px) {
+  html {
+    font-size: 87.5%; /* One stage smaller (14px) than desktop (16px) */
+  }
+}
+
 body {
   background-color: var(--color-brand-surface);
   color: #161c24;
+}
+
+@keyframes aurora-float-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8%, 6%) scale(1.08);
+  }
+}
+
+@keyframes aurora-float-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-6%, -8%) scale(1.04);
+  }
+}
+
+@keyframes aurora-float-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4%, -6%) scale(1.12);
+  }
+}
+
+.animate-aurora-slow {
+  animation: aurora-float-1 25s ease-in-out infinite;
+}
+
+.animate-aurora-medium {
+  animation: aurora-float-2 18s ease-in-out infinite;
+}
+
+.animate-aurora-fast {
+  animation: aurora-float-3 12s ease-in-out infinite;
 }

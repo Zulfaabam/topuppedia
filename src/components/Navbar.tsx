@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import LoginModal from './LoginModal'
 import SignupModal from './SignupModal'
 import { useUser } from '../contexts/UserContext'
@@ -14,12 +14,18 @@ export default function Navbar() {
     closeSignupModal,
   } = useUser()
 
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const handleLogout = () => {
     logout()
+    if (location.pathname === '/account') {
+      navigate('/')
+    }
   }
 
   return (
-    <nav className='bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100'>
+    <nav className='bg-transparent backdrop-blur-md sticky top-0 z-50'>
       <div className='max-w-7xl mx-auto px-4 h-20 flex items-center justify-between'>
         <div className='flex items-center gap-12'>
           <Link

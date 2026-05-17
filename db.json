@@ -25,7 +25,8 @@
       "email": "abam@mail.com",
       "password": "test123",
       "role": "user",
-      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=abam"
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=abam",
+      "phone": "081542426045"
     }
   ],
   "transactions": [

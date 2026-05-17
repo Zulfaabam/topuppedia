@@ -132,12 +132,6 @@ export default function LoginModal({
                     <label className='text-xs font-bold text-gray-700 uppercase tracking-wider'>
                       Kata Sandi
                     </label>
-                    <a
-                      href='#'
-                      className='text-[10px] font-bold text-brand-primary hover:underline'
-                    >
-                      Lupa Kata Sandi?
-                    </a>
                   </div>
                   <div className='relative'>
                     <input
